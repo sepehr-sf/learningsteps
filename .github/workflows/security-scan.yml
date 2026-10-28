@@ -1,0 +1,31 @@
+
+name: Build and Scan LearningSteps API
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t learningsteps-api:latest .
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.33.0
+        with:
+          image-ref: learningsteps-api:latest
+          scanners: vuln
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+
