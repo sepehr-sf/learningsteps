@@ -1,5 +1,5 @@
 
-name: Terraform Security Scan- tfsec
+name: Security Scan_ Terraform - tfsec
 
 on:
   push:
