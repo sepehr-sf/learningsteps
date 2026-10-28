@@ -1,5 +1,5 @@
 
-name: Build and Scan LearningSteps API - Trivy
+name: Security Scan_ Trivy
 
 on:
   push:
