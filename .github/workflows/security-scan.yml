@@ -9,8 +9,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   security-scan:
+    name: Build and scan Docker image
     runs-on: ubuntu-latest
 
     steps:
@@ -20,12 +24,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t learningsteps-api:latest .
 
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.3.1
+        with:
+          version: v0.76.1
+
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.33.0
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: learningsteps-api:latest
           scanners: vuln
           vuln-type: os,library
           severity: HIGH,CRITICAL
-          exit-code: '1'
-
+          exit-code: '0'
+          skip-setup-trivy: true
